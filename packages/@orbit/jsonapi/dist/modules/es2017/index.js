@@ -1,0 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var jsonapi_source_1 = require("./jsonapi-source");
+exports.default = jsonapi_source_1.default;
+var jsonapi_serializer_1 = require("./jsonapi-serializer");
+exports.JSONAPISerializer = jsonapi_serializer_1.default;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJzcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxtREFBMkM7QUFBbEMsbUNBQUEsT0FBTyxDQUFBO0FBQ2hCLDJEQUFvRTtBQUEzRCxpREFBQSxPQUFPLENBQXFCIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IHsgZGVmYXVsdCB9IGZyb20gJy4vanNvbmFwaS1zb3VyY2UnO1xyXG5leHBvcnQgeyBkZWZhdWx0IGFzIEpTT05BUElTZXJpYWxpemVyIH0gZnJvbSAnLi9qc29uYXBpLXNlcmlhbGl6ZXInO1xyXG5leHBvcnQgKiBmcm9tICcuL2pzb25hcGktZG9jdW1lbnQnO1xyXG4iXX0=

@@ -1,0 +1,21 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("@orbit/utils");
+// Establish the root object, `window` (`self`) in the browser, `global`
+// on the server, or `this` in some virtual machines. We use `self`
+// instead of `window` for `WebWorker` support.
+//
+// Source: https://github.com/jashkenas/underscore/blob/master/underscore.js#L11-L17
+//     Underscore.js 1.8.3
+//     http://underscorejs.org
+//     (c) 2009-2017 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+//     Underscore may be freely distributed under the MIT license.
+var globals = typeof self == 'object' && self.self === self && self || typeof global == 'object' && global.global === global && global || undefined || {};
+var Orbit = {
+    globals: globals,
+    Promise: globals.Promise,
+    uuid: utils_1.uuid
+};
+exports.default = Orbit;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbInNyYy9tYWluLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUFBLHNCQUFvQztBQUtwQyxBQUF3RTtBQUN4RSxBQUFtRTtBQUNuRSxBQUErQztBQUMvQyxBQUFFO0FBQ0YsQUFBb0Y7QUFDcEYsQUFBMEI7QUFDMUIsQUFBOEI7QUFDOUIsQUFBeUY7QUFDekYsQUFBa0U7QUFDbEUsSUFBTSxBQUFPLFVBQUcsT0FBTyxBQUFJLFFBQUksQUFBUSxZQUFJLEFBQUksS0FBQyxBQUFJLFNBQUssQUFBSSxRQUFJLEFBQUksUUFDckQsT0FBTyxBQUFNLFVBQUksQUFBUSxZQUFJLEFBQU0sT0FBQyxBQUFNLFdBQUssQUFBTSxVQUFJLEFBQU0sQUFDL0QsQUFBSSx1QkFDSixBQUFFLEFBQUM7QUFFbkIsSUFBTSxBQUFLO0FBQ1QsQUFBTyxhQUFBO0FBQ1AsQUFBTyxhQUFFLEFBQU8sUUFBQyxBQUFPO0FBQ3hCLEFBQUksa0JBQUEsQUFDTCxBQUFDO0FBSmlCO0FBTW5CLGtCQUFlLEFBQUssQUFBQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHV1aWQgfSBmcm9tICdAb3JiaXQvdXRpbHMnO1xyXG5cclxuZGVjbGFyZSBjb25zdCBzZWxmOiBhbnk7XHJcbmRlY2xhcmUgY29uc3QgZ2xvYmFsOiBhbnk7XHJcblxyXG4vLyBFc3RhYmxpc2ggdGhlIHJvb3Qgb2JqZWN0LCBgd2luZG93YCAoYHNlbGZgKSBpbiB0aGUgYnJvd3NlciwgYGdsb2JhbGBcclxuLy8gb24gdGhlIHNlcnZlciwgb3IgYHRoaXNgIGluIHNvbWUgdmlydHVhbCBtYWNoaW5lcy4gV2UgdXNlIGBzZWxmYFxyXG4vLyBpbnN0ZWFkIG9mIGB3aW5kb3dgIGZvciBgV2ViV29ya2VyYCBzdXBwb3J0LlxyXG4vL1xyXG4vLyBTb3VyY2U6IGh0dHBzOi8vZ2l0aHViLmNvbS9qYXNoa2VuYXMvdW5kZXJzY29yZS9ibG9iL21hc3Rlci91bmRlcnNjb3JlLmpzI0wxMS1MMTdcclxuLy8gICAgIFVuZGVyc2NvcmUuanMgMS44LjNcclxuLy8gICAgIGh0dHA6Ly91bmRlcnNjb3JlanMub3JnXHJcbi8vICAgICAoYykgMjAwOS0yMDE3IEplcmVteSBBc2hrZW5hcywgRG9jdW1lbnRDbG91ZCBhbmQgSW52ZXN0aWdhdGl2ZSBSZXBvcnRlcnMgJiBFZGl0b3JzXHJcbi8vICAgICBVbmRlcnNjb3JlIG1heSBiZSBmcmVlbHkgZGlzdHJpYnV0ZWQgdW5kZXIgdGhlIE1JVCBsaWNlbnNlLlxyXG5jb25zdCBnbG9iYWxzID0gdHlwZW9mIHNlbGYgPT0gJ29iamVjdCcgJiYgc2VsZi5zZWxmID09PSBzZWxmICYmIHNlbGYgfHxcclxuICAgICAgICAgICAgICAgIHR5cGVvZiBnbG9iYWwgPT0gJ29iamVjdCcgJiYgZ2xvYmFsLmdsb2JhbCA9PT0gZ2xvYmFsICYmIGdsb2JhbCB8fFxyXG4gICAgICAgICAgICAgICAgdGhpcyB8fFxyXG4gICAgICAgICAgICAgICAge307XHJcblxyXG5jb25zdCBPcmJpdDogYW55ID0ge1xyXG4gIGdsb2JhbHMsXHJcbiAgUHJvbWlzZTogZ2xvYmFscy5Qcm9taXNlLFxyXG4gIHV1aWRcclxufTtcclxuXHJcbmV4cG9ydCBkZWZhdWx0IE9yYml0O1xyXG4iXX0=

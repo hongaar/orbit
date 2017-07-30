@@ -1,0 +1,9 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@orbit/core");
+function supportsIndexedDB() {
+    return !!core_1.default.globals.indexedDB;
+}
+exports.supportsIndexedDB = supportsIndexedDB;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXhlZGRiLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2xpYi9pbmRleGVkZGIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEscUJBQWdDO0FBRWhDLDZCQUNFLEFBQU07V0FBQyxDQUFDLENBQUMsT0FBSyxRQUFDLEFBQU8sUUFBQyxBQUFTLEFBQUMsQUFDbkMsQUFBQzs7QUFGRCw0QkFFQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBPcmJpdCBmcm9tICdAb3JiaXQvY29yZSc7XHJcblxyXG5leHBvcnQgZnVuY3Rpb24gc3VwcG9ydHNJbmRleGVkREIoKTogYm9vbGVhbiB7XHJcbiAgcmV0dXJuICEhT3JiaXQuZ2xvYmFscy5pbmRleGVkREI7XHJcbn1cclxuIl19
