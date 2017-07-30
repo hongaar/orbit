@@ -1,0 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@orbit/core");
+function supportsLocalStorage() {
+    return !!core_1.default.globals.localStorage;
+}
+exports.supportsLocalStorage = supportsLocalStorage;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibG9jYWwtc3RvcmFnZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9saWIvbG9jYWwtc3RvcmFnZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLG9DQUFnQztBQUVoQztJQUNFLE1BQU0sQ0FBQyxDQUFDLENBQUMsY0FBSyxDQUFDLE9BQU8sQ0FBQyxZQUFZLENBQUM7QUFDdEMsQ0FBQztBQUZELG9EQUVDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IE9yYml0IGZyb20gJ0BvcmJpdC9jb3JlJztcclxuXHJcbmV4cG9ydCBmdW5jdGlvbiBzdXBwb3J0c0xvY2FsU3RvcmFnZSgpOiBib29sZWFuIHtcclxuICByZXR1cm4gISFPcmJpdC5nbG9iYWxzLmxvY2FsU3RvcmFnZTtcclxufVxyXG4iXX0=
