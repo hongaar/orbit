@@ -14,7 +14,7 @@
   "repository": "https://github.com/orbitjs/orbit",
   "license": "MIT",
   "scripts": {
-    "postinstall": "lerna bootstrap",
+    "init": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run build && lerna run --concurrency 1 test"
   },
