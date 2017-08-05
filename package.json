@@ -1,6 +1,7 @@
 {
   "name": "@orbit/orbit",
   "private": true,
+  "version": "1.0.0",
   "description": "Core library for Orbit - a flexible data access and synchronization layer.",
   "contributors": [
     "Dan Gebhardt <dan@cerebris.com>"
