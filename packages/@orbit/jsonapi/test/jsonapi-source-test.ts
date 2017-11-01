@@ -1175,4 +1175,115 @@ module('JSONAPISource', function(hooks) {
         });
     });
   });
+
+  module('server generated ids', function(hooks) {
+    hooks.beforeEach(function() {
+      fetchStub = sinon.stub(Orbit, 'fetch');
+
+      schema = new Schema({
+        models: {
+          planet: {
+            attributes: {
+              name: { type: 'string' },
+              classification: { type: 'string' }
+            },
+            relationships: {
+              moons: { type: 'hasMany', model: 'moon', inverse: 'planet' }
+            }
+          },
+          moon: {
+            attributes: {
+              name: { type: 'string' }
+            },
+            relationships: {
+              planet: { type: 'hasOne', model: 'planet', inverse: 'moons' }
+            }
+          }
+        }
+      });
+
+      schema.initializeRecord = function(record: Record): void {
+        // Don not generate ids
+      }
+
+      source = new JSONAPISource({ schema });
+    });
+
+    hooks.afterEach(function() {
+      schema = source = null;
+      fetchStub.restore();
+    });
+
+    test('#push - do not generate local ids', function(assert) {
+      let planet = {
+        type: 'planet',
+        attributes: { name: 'Jupiter', classification: 'gas giant' }
+      }
+
+      schema.initializeRecord(planet);
+      assert.equal(planet.id, undefined, 'doesn\'t generate an ID if `id` is undefined');
+    })
+
+    test('#push - can add records and receives server generated id', function(assert) {
+      assert.expect(5);
+
+      let transformCount = 0;
+
+      let planet = {
+        type: 'planet',
+        attributes: { name: 'Jupiter', classification: 'gas giant' }
+      };
+
+      let addPlanetOp = {
+        op: 'addRecord',
+        record: {
+          type: 'planet',
+          id: 1,
+          attributes: {
+            name: 'Jupiter',
+            classification: 'gas giant'
+          }
+        }
+      };
+
+      source.on('transform', <() => void>function(transform) {
+        transformCount++;
+
+        if (transformCount === 1) {
+          assert.deepEqual(
+            transform.operations,
+            [addPlanetOp],
+            'transform event receives server generated id'
+          );
+        }
+      });
+
+      fetchStub
+        .withArgs('/planets')
+        .returns(jsonapiResponse(201, {
+          data: { id: 1, type: 'planets', attributes: { name: 'Jupiter', classification: 'gas giant' } }
+        }));
+
+      return source.push(t => t.addRecord(planet))
+        .then(function() {
+          assert.ok(true, 'transform resolves successfully');
+
+          assert.equal(fetchStub.callCount, 1, 'fetch called once');
+          assert.equal(fetchStub.getCall(0).args[1].method, 'POST', 'fetch called with expected method');
+          assert.deepEqual(
+            JSON.parse(fetchStub.getCall(0).args[1].body),
+            {
+              data: {
+                type: 'planets',
+                attributes: {
+                  name: 'Jupiter',
+                  classification: 'gas giant'
+                }
+              }
+            },
+            'fetch called with expected data'
+          );
+        });
+    });
+  });
 });
