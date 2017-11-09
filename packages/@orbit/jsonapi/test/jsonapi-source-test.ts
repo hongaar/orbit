@@ -12,6 +12,7 @@ import Orbit, {
   Source
 } from '@orbit/data';
 import JSONAPISource from '../src/jsonapi-source';
+import JSONAPISerializer from '../src/jsonapi-serializer';
 import { jsonapiResponse } from './support/jsonapi';
 import './test-helper';
 
@@ -1203,10 +1204,19 @@ module('JSONAPISource', function(hooks) {
       });
 
       schema.initializeRecord = function(record: Record): void {
-        // Don not generate ids
+        // Do not generate ids
       }
 
-      source = new JSONAPISource({ schema });
+      source = new JSONAPISource({
+        schema,
+        pessimistic: true,
+      });
+
+      // @todo Debug only
+      // source.on('beforePush', (...args) => { console.log('beforePush', args); });
+      // source.on('push', (...args) => { console.log('push', args); });
+      // source.on('pushFail', (...args) => { console.log('pushFail', args); });
+      // source.on('transform', (...args) => { console.log('transform', args); });
     });
 
     hooks.afterEach(function() {
@@ -1225,7 +1235,7 @@ module('JSONAPISource', function(hooks) {
     })
 
     test('#push - can add records and receives server generated id', function(assert) {
-      assert.expect(5);
+      assert.expect(6);
 
       let transformCount = 0;
 
@@ -1252,8 +1262,14 @@ module('JSONAPISource', function(hooks) {
         if (transformCount === 1) {
           assert.deepEqual(
             transform.operations,
+            [],
+            '1st transform event receives no operations'
+          );
+        } else if (transformCount === 2) {
+          assert.deepEqual(
+            transform.operations,
             [addPlanetOp],
-            'transform event receives server generated id'
+            '2nd transform event receives server generated id'
           );
         }
       });
