@@ -1,17 +1,24 @@
 import Orbit, {
+  buildTransform,
   ClientError,
   KeyMap,
   NetworkError,
   Record,
   RecordIdentity,
   RecordOperation,
+  AddRecordOperation,
   ReplaceRecordOperation,
   Transform,
   TransformNotAllowed,
   Schema,
   Source
 } from '@orbit/data';
+import { clone } from '@orbit/utils';
 import JSONAPISource from '../src/jsonapi-source';
+import { getTransformRequests, TransformRequestProcessors } from '../src/lib/transform-requests';
+import { buildFetchSettings } from '../src/lib/request-settings';
+import { JSONAPIDocument } from '../src/jsonapi-document';
+import { DeserializedDocument } from '../src/jsonapi-serializer';
 import { jsonapiResponse } from './support/jsonapi';
 import './test-helper';
 
@@ -1207,6 +1214,27 @@ module('JSONAPISource', function(hooks) {
       }
 
       source = new JSONAPISource({ schema });
+
+      source.addRecord = function(record: Record): Promise {
+        const request = {
+          op: 'addRecord',
+          record: record
+        };
+
+        const { serializer } = this;
+        const requestDoc: JSONAPIDocument = serializer.serializeDocument(record);
+        const settings = buildFetchSettings(request, { method: 'POST', json: requestDoc });
+
+        return this.fetch(this.resourceURL(record.type), settings)
+          .then((raw: JSONAPIDocument) => {
+            let responseDoc: DeserializedDocument = serializer.deserializeDocument(raw);
+            let addedRecord: Record = <Record>responseDoc.data;
+            let operations: RecordOperation[] = [this.transformBuilder.addRecord(addedRecord)];
+
+            return [buildTransform(operations)];
+          })
+          .then(transforms => this._transformed(transforms));
+      }
     });
 
     hooks.afterEach(function() {
@@ -1214,7 +1242,7 @@ module('JSONAPISource', function(hooks) {
       fetchStub.restore();
     });
 
-    test('#push - do not generate local ids', function(assert) {
+    test('#addRecord - do not generate local ids', function(assert) {
       let planet = {
         type: 'planet',
         attributes: { name: 'Jupiter', classification: 'gas giant' }
@@ -1224,7 +1252,7 @@ module('JSONAPISource', function(hooks) {
       assert.equal(planet.id, undefined, 'doesn\'t generate an ID if `id` is undefined');
     })
 
-    test('#push - can add records and receives server generated id', function(assert) {
+    test('#addRecord - can add records and receives server generated id', function(assert) {
       assert.expect(5);
 
       let transformCount = 0;
@@ -1264,7 +1292,7 @@ module('JSONAPISource', function(hooks) {
           data: { id: 1, type: 'planets', attributes: { name: 'Jupiter', classification: 'gas giant' } }
         }));
 
-      return source.push(t => t.addRecord(planet))
+      return source.addRecord(planet)
         .then(function() {
           assert.ok(true, 'transform resolves successfully');
 
