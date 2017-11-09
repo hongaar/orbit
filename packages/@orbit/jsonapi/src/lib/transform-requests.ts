@@ -33,8 +33,14 @@ export const TransformRequestProcessors = {
       .then((raw: JSONAPIDocument) => {
         let responseDoc: DeserializedDocument = serializer.deserializeDocument(raw);
         let updatedRecord: Record = <Record>responseDoc.data;
+        let updateOps: RecordOperation[];
 
-        let updateOps = recordDiffs(record, updatedRecord);
+        if (source.pessimistic) {
+          updateOps = [source.transformBuilder.addRecord(updatedRecord)]
+        } else {
+          updateOps = recordDiffs(record, updatedRecord);
+        }
+
         if (updateOps.length > 0) {
           return [buildTransform(updateOps)];
         }
@@ -45,6 +51,8 @@ export const TransformRequestProcessors = {
     const { type, id } = request.record;
     const settings = buildFetchSettings(request, { method: 'DELETE' });
 
+    // @todo return transforms for pessimistic source
+
     return source.fetch(source.resourceURL(type, id), settings)
       .then(() => []);
   },
@@ -54,6 +62,8 @@ export const TransformRequestProcessors = {
     const { type, id } = record;
     const requestDoc: JSONAPIDocument = source.serializer.serializeDocument(record);
     const settings = buildFetchSettings(request, { method: 'PATCH', json: requestDoc });
+
+    // @todo return transforms for pessimistic source
 
     return source.fetch(source.resourceURL(type, id), settings)
       .then(() => []);
@@ -67,6 +77,8 @@ export const TransformRequestProcessors = {
     };
     const settings = buildFetchSettings(request, { method: 'POST', json });
 
+    // @todo return transforms for pessimistic source
+
     return source.fetch(source.resourceRelationshipURL(type, id, relationship), settings)
       .then(() => []);
   },
@@ -78,6 +90,8 @@ export const TransformRequestProcessors = {
       data: request.relatedRecords.map(r => source.serializer.resourceIdentity(r))
     };
     const settings = buildFetchSettings(request, { method: 'DELETE', json });
+
+    // @todo return transforms for pessimistic source
 
     return source.fetch(source.resourceRelationshipURL(type, id, relationship), settings)
       .then(() => []);
@@ -91,6 +105,8 @@ export const TransformRequestProcessors = {
     };
     const settings = buildFetchSettings(request, { method: 'PATCH', json });
 
+    // @todo return transforms for pessimistic source
+
     return source.fetch(source.resourceRelationshipURL(type, id, relationship), settings)
       .then(() => []);
   },
@@ -102,6 +118,8 @@ export const TransformRequestProcessors = {
       data: relatedRecords.map(r => source.serializer.resourceIdentity(r))
     };
     const settings = buildFetchSettings(request, { method: 'PATCH', json });
+
+    // @todo return transforms for pessimistic source
 
     return source.fetch(source.resourceRelationshipURL(type, id, relationship), settings)
       .then(() => []);

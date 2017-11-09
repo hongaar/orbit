@@ -42,6 +42,7 @@ export interface JSONAPISourceSettings extends SourceSettings {
   host?: string;
   defaultFetchHeaders?: object;
   defaultFetchTimeout?: number;
+  pessimistic?: boolean;
   SerializerClass?: (new (settings: JSONAPISerializerSettings) => JSONAPISerializer);
 }
 
@@ -67,6 +68,7 @@ export default class JSONAPISource extends Source implements Pullable, Pushable 
   host: string;
   defaultFetchHeaders: object;
   defaultFetchTimeout: number;
+  pessimistic: boolean;
   serializer: JSONAPISerializer;
 
   // Pullable interface stubs
@@ -88,6 +90,7 @@ export default class JSONAPISource extends Source implements Pullable, Pushable 
     this.host                = settings.host;
     this.defaultFetchHeaders = settings.defaultFetchHeaders || { Accept: 'application/vnd.api+json' };
     this.defaultFetchTimeout = settings.defaultFetchTimeout || 5000;
+    this.pessimistic         = settings.pessimistic || false;
 
     this.maxRequestsPerTransform = settings.maxRequestsPerTransform;
 
@@ -113,6 +116,14 @@ export default class JSONAPISource extends Source implements Pullable, Pushable 
 
     return this._processRequests(requests, TransformRequestProcessors)
       .then(transforms => {
+
+        // When original transform was an addRecord operation and source is
+        // pessimistic, skip adding the original transform to the returned
+        // transforms
+        if (this.pessimistic) {
+          transform.operations = transform.operations.filter(item => item.op !== 'addRecord')
+        }
+
         transforms.unshift(transform);
         return transforms;
       });
