@@ -1,4 +1,5 @@
 import {
+  mergeRecords,
   cloneRecordIdentity,
   equalRecordIdentities,
   Record, RecordIdentity,
@@ -14,7 +15,8 @@ import {
 } from '@orbit/data';
 import {
   deepGet,
-  deepSet
+  deepSet,
+  merge
 } from '@orbit/utils';
 import Source from '../source';
 
@@ -24,7 +26,10 @@ export default {
   },
 
   replaceRecord(source: Source, operation: ReplaceRecordOperation) {
-    source.putRecord(operation.record);
+    let updates = operation.record;
+    let current = source.getRecord(updates);
+    let record = mergeRecords(current, updates);
+    source.putRecord(record);
   },
 
   removeRecord(source: Source, operation: RemoveRecordOperation) {
@@ -58,15 +63,17 @@ export default {
 
   removeFromRelatedRecords(source: Source, operation: RemoveFromRelatedRecordsOperation) {
     let record: Record = source.getRecord(operation.record);
-    let relationships = deepGet(record, ['relationships', operation.relationship, 'data']) as RecordIdentity[];
-    if (relationships) {
-      for (let i = 0, l = relationships.length; i < l; i++) {
-        if (equalRecordIdentities(relationships[i], operation.relatedRecord)) {
-          relationships.splice(i, 1);
-          break;
+    if (record) {
+      let relationships = deepGet(record, ['relationships', operation.relationship, 'data']) as RecordIdentity[];
+      if (relationships) {
+        for (let i = 0, l = relationships.length; i < l; i++) {
+          if (equalRecordIdentities(relationships[i], operation.relatedRecord)) {
+            relationships.splice(i, 1);
+            break;
+          }
         }
+        return source.putRecord(record);
       }
-      return source.putRecord(record);
     }
   },
 

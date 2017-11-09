@@ -29,7 +29,7 @@ module('Schema', function() {
     schema.on('upgrade', (version) => {
       assert.equal(version, 2, 'version is passed as argument');
       assert.equal(schema.version, 2, 'version === 2');
-      assert.ok(schema.models.planet.attributes.name, 'model attribute has been added');
+      assert.ok(schema.getModel('planet').attributes.name, 'model attribute has been added');
       done();
     });
 
@@ -58,6 +58,61 @@ module('Schema', function() {
     });
 
     assert.deepEqual(schema.models.planet.attributes, planetDefinition.attributes);
+  });
+
+  test('#getModel provides access to a model definition', function(assert) {
+    const planetDefinition = {
+      attributes: {
+        name: { type: 'string', defaultValue: 'Earth' }
+      }
+    };
+
+    const schema = new Schema({
+      models: {
+        planet: planetDefinition
+      }
+    });
+
+    assert.deepEqual(schema.getModel('planet').attributes, planetDefinition.attributes);
+  });
+
+  test('#getModel throws an exception if a model definition is not found', function(assert) {
+    const schema = new Schema();
+
+    assert.throws(function() {
+      schema.getModel('planet');
+    }, /Schema error: Model definition for planet not found/)
+  });
+  
+  test('#hasAttribute', function(assert) {
+    const schema = new Schema({
+      models: {
+        planet: {
+          attributes: {
+            name: { type: 'string', defaultValue: 'Earth' }
+          }
+        }
+      }
+    });
+
+    assert.equal(schema.hasAttribute('planet', 'name'), true);
+    assert.equal(schema.hasAttribute('planet', 'unknown'), false);
+  });
+
+  test('#hasRelationship', function(assert) {
+    const schema = new Schema({
+      models: {
+        planet: {
+          relationships: {
+            moons: { type: 'hasMany', model: 'moon' },
+          }
+        },
+        moon: {}
+      },
+    });
+
+    assert.equal(schema.hasRelationship('planet', 'moons'), true);
+    assert.equal(schema.hasRelationship('planet', 'unknown'), false);
   });
 
   test('#pluralize simply adds an `s` to the end of words', function(assert) {

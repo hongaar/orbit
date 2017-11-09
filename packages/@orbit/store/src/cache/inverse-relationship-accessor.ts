@@ -30,6 +30,14 @@ export default class InverseRelationshipAccessor {
     this._relationships = relationships;
   }
 
+  upgrade() {
+    Object.keys(this._cache.schema.models).forEach(type => {
+      if (!this._relationships[type]) {
+        this._relationships[type] = new ImmutableMap();
+      }
+    });
+  }
+
   all(record: RecordIdentity): InverseRelationship[] {
     return this._relationships[record.type].get(record.id) || [];
   }
@@ -79,7 +87,7 @@ export default class InverseRelationshipAccessor {
 
   relatedRecordAdded(record: RecordIdentity, relationship: string, relatedRecord: RecordIdentity): void {
     if (relatedRecord) {
-      const relationshipDef = this._cache.schema.models[record.type].relationships[relationship];
+      const relationshipDef = this._cache.schema.getModel(record.type).relationships[relationship];
       if (relationshipDef.inverse) {
         const recordIdentity = cloneRecordIdentity(record);
         this.add(relatedRecord, { record: recordIdentity, relationship });
@@ -89,7 +97,7 @@ export default class InverseRelationshipAccessor {
 
   relatedRecordsAdded(record: RecordIdentity, relationship: string, relatedRecords: RecordIdentity[]): void {
     if (relatedRecords && relatedRecords.length > 0) {
-      const relationshipDef = this._cache.schema.models[record.type].relationships[relationship];
+      const relationshipDef = this._cache.schema.getModel(record.type).relationships[relationship];
       if (relationshipDef.inverse) {
         const recordIdentity = cloneRecordIdentity(record);
         relatedRecords.forEach(relatedRecord => {
@@ -100,7 +108,7 @@ export default class InverseRelationshipAccessor {
   }
 
   relatedRecordRemoved(record: RecordIdentity, relationship: string, relatedRecord?: RecordIdentity): void {
-    const relationshipDef = this._cache.schema.models[record.type].relationships[relationship];
+    const relationshipDef = this._cache.schema.getModel(record.type).relationships[relationship];
 
     if (relationshipDef.inverse) {
       if (relatedRecord === undefined) {
@@ -115,7 +123,7 @@ export default class InverseRelationshipAccessor {
   }
 
   relatedRecordsRemoved(record: RecordIdentity, relationship: string, relatedRecords?: RecordIdentity[]): void {
-    const relationshipDef = this._cache.schema.models[record.type].relationships[relationship];
+    const relationshipDef = this._cache.schema.getModel(record.type).relationships[relationship];
 
     if (relationshipDef.inverse) {
       if (relatedRecords === undefined) {
