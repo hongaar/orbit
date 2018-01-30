@@ -10,6 +10,7 @@ export interface SourceSettings {
     bucket?: Bucket;
     queryBuilder?: QueryBuilder;
     transformBuilder?: TransformBuilder;
+    autoUpgrade?: boolean;
 }
 export declare type SourceClass = (new () => Source);
 /**
@@ -48,6 +49,13 @@ export declare abstract class Source implements Evented, Performer {
     readonly queryBuilder: QueryBuilder;
     readonly transformBuilder: TransformBuilder;
     perform(task: Task): Promise<any>;
+    /**
+     * Upgrade source as part of a schema upgrade.
+     *
+     * @returns {Promise<void>}
+     * @memberof Source
+     */
+    upgrade(): Promise<void>;
     /**
      Notifies listeners that this source has been transformed by emitting the
      `transform` event.

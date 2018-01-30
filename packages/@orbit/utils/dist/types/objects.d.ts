@@ -15,19 +15,19 @@ export declare function clone(obj: any): any;
  * Methods will be called on `source` and will maintain `source` as the context.
  *
  * @export
- * @param {object} destination
- * @param {object} source
+ * @param {*} destination
+ * @param {*} source
  */
-export declare function expose(destination: object, source: object): void;
+export declare function expose(destination: any, source: any): void;
 /**
  * Extend an object with the properties of one or more other objects.
  *
  * @export
- * @param {object} destination
- * @param {any} sources
- * @returns {object}
+ * @param {*} destination
+ * @param {...any[]} sources
+ * @returns {any}
  */
-export declare function extend(destination: object, ...sources: any[]): object;
+export declare function extend(destination: any, ...sources: any[]): any;
 /**
  * Checks whether an object is an instance of an `Array`
  *
@@ -66,22 +66,22 @@ export declare function isNone(obj: any): boolean;
  * that already exist.
  *
  * @export
- * @param {object} base
- * @param {...object[]} sources
- * @returns {object}
+ * @param {*} base
+ * @param {...any[]} sources
+ * @returns {*}
  */
-export declare function merge(object: object, ...sources: object[]): object;
+export declare function merge(object: any, ...sources: any[]): any;
 /**
  * Retrieves a value from a nested path on an object.
  *
  * Returns any falsy value encountered while traversing the path.
  *
  * @export
- * @param {object} obj
+ * @param {*} obj
  * @param {string[]} path
  * @returns {*}
  */
-export declare function deepGet(obj: object, path: string[]): any;
+export declare function deepGet(obj: any, path: string[]): any;
 /**
  * Sets a value on an object at a nested path.
  *
@@ -92,19 +92,19 @@ export declare function deepGet(obj: object, path: string[]): any;
  * requested `value` argument. Otherwise returns `true`.
  *
  * @export
- * @param {object} obj
+ * @param {*} obj
  * @param {string[]} path
  * @param {*} value
  * @returns {boolean} was the value was actually changed?
  */
-export declare function deepSet(obj: object, path: string[], value: any): boolean;
+export declare function deepSet(obj: any, path: string[], value: any): boolean;
 /**
  * Find an array of values that correspond to the keys of an object.
  *
  * This is a ponyfill for `Object.values`, which is still experimental.
  *
  * @export
- * @param {object} obj
+ * @param {*} obj
  * @returns {any[]}
  */
-export declare function objectValues(obj: object): any[];
+export declare function objectValues(obj: any): any[];

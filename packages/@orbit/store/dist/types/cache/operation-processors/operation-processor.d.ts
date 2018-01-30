@@ -41,6 +41,19 @@ export declare abstract class OperationProcessor {
      */
     reset(base?: Cache): void;
     /**
+     * Allow the processor to perform an upgrade as part of a cache upgrade.
+     *
+     * @memberof OperationProcessor
+     */
+    upgrade(): void;
+    /**
+     * Validates an operation before processing it.
+     *
+     * @param {RecordOperation} operation
+     * @memberof OperationProcessor
+     */
+    validate(operation: RecordOperation): void;
+    /**
      * Called before an `operation` has been applied.
      *
      * Returns an array of operations to be applied **BEFORE** the `operation`

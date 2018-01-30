@@ -24,6 +24,7 @@ export default class IndexedDBSource extends Source implements Pullable, Pushabl
      * @param {String}  [settings.namespace] Optional. Namespace of the application. Will be used for the IndexedDB database name. Defaults to 'orbit'.
      */
     constructor(settings?: IndexedDBSourceSettings);
+    upgrade(): Promise<void>;
     /**
      * The version to specify when opening the IndexedDB database.
      *

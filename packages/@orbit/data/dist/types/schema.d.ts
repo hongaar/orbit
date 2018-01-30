@@ -67,7 +67,7 @@ export interface SchemaSettings {
  * @implements {Evented}
  */
 export default class Schema implements Evented, RecordInitializer {
-    models: Dict<ModelDefinition>;
+    private _models;
     private _version;
     on: (event: string, callback: (any) => void, binding?: any) => void;
     off: (event: string, callback: (any) => void, binding?: any) => void;
@@ -138,4 +138,8 @@ export default class Schema implements Evented, RecordInitializer {
      */
     singularize(word: string): string;
     initializeRecord(record: Record): void;
+    readonly models: Dict<ModelDefinition>;
+    getModel(type: string): ModelDefinition;
+    hasAttribute(type: string, attribute: string): boolean;
+    hasRelationship(type: string, relationship: string): boolean;
 }

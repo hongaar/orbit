@@ -8,6 +8,7 @@ export default class RelationshipAccessor {
     protected _relationships: Dict<ImmutableMap<string, Dict<RecordIdentity | RecordIdentityMap>>>;
     constructor(cache: Cache, base?: RelationshipAccessor);
     reset(base?: RelationshipAccessor): void;
+    upgrade(): void;
     relationshipExists(record: RecordIdentity, relationship: string, relatedRecord: RecordIdentity): boolean;
     relatedRecord(record: RecordIdentity, relationship: string): RecordIdentity;
     relatedRecords(record: RecordIdentity, relationship: string): RecordIdentity[];

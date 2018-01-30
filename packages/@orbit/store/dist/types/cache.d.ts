@@ -85,6 +85,12 @@ export default class Cache implements Evented {
      */
     reset(base?: Cache): void;
     /**
+     * Upgrade the cache based on the current state of the schema.
+     *
+     * @memberof Cache
+     */
+    upgrade(): void;
+    /**
      * Patches the document with an operation.
      *
      * @param {(Operation | Operation[] | TransformBuilderFunc)} operationOrOperations

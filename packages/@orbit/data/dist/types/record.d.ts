@@ -20,3 +20,4 @@ export interface RecordInitializer {
 }
 export declare function cloneRecordIdentity(identity: RecordIdentity): RecordIdentity;
 export declare function equalRecordIdentities(record1: RecordIdentity, record2: RecordIdentity): boolean;
+export declare function mergeRecords(current: Record | null, updates: Record): Record;

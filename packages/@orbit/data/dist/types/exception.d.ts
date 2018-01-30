@@ -70,6 +70,25 @@ export declare class TransformNotAllowed extends Exception {
     constructor(description: string, transform: any);
 }
 /**
+ * An error occured related to the schema.
+ *
+ * @export
+ * @class SchemaError
+ */
+export declare class SchemaError extends Exception {
+    description: string;
+    constructor(description: string);
+}
+/**
+ * A model could not be found in the schema.
+ *
+ * @export
+ * @class ModelNotFound
+ */
+export declare class ModelNotFound extends SchemaError {
+    constructor(type: string);
+}
+/**
  * An error occurred related to a particular record.
  *
  * @export

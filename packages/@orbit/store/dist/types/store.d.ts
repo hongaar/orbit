@@ -1,6 +1,7 @@
 import { RecordOperation, Source, SourceSettings, Syncable, QueryOrExpression, Queryable, Updatable, Transform, TransformOrOperations } from '@orbit/data';
 import Cache, { CacheSettings, PatchResultData } from './cache';
 export interface StoreSettings extends SourceSettings {
+    base?: Store;
     cacheSettings?: CacheSettings;
 }
 export interface StoreMergeOptions {
@@ -10,6 +11,8 @@ export interface StoreMergeOptions {
 }
 export default class Store extends Source implements Syncable, Queryable, Updatable {
     private _cache;
+    private _base;
+    private _forkPoint;
     private _transforms;
     private _transformInverses;
     sync: (transformOrTransforms: Transform | Transform[]) => Promise<void>;
@@ -17,6 +20,9 @@ export default class Store extends Source implements Syncable, Queryable, Updata
     update: (transformOrOperations: TransformOrOperations, options?: object, id?: string) => Promise<any>;
     constructor(settings?: StoreSettings);
     readonly cache: Cache;
+    readonly base: Store;
+    readonly forkPoint: string;
+    upgrade(): Promise<void>;
     _sync(transform: Transform): Promise<void>;
     _update(transform: Transform): Promise<any>;
     _query(query: QueryOrExpression): any;

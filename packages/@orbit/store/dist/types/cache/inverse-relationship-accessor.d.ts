@@ -11,6 +11,7 @@ export default class InverseRelationshipAccessor {
     protected _relationships: Dict<ImmutableMap<string, InverseRelationship[]>>;
     constructor(cache: Cache, base?: InverseRelationshipAccessor);
     reset(base?: InverseRelationshipAccessor): void;
+    upgrade(): void;
     all(record: RecordIdentity): InverseRelationship[];
     recordAdded(record: Record): void;
     recordRemoved(record: RecordIdentity): void;
